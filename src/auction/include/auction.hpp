@@ -2,9 +2,6 @@
 //
 
 #include <algorithm>  // std::find
-#include <chrono>     // std::chrono::duration, std::chrono::duration_cast,
-                      //   std::chrono::high_resolution_clock::now,
-                      //   std::chrono::high_resolution_clock::time_point
 #include <cmath>      // std::abs, std::sqrt
 #include <cstdlib>    // exit, EXIT_FAILURE
 #include <cstdio>     // std::sprintf
