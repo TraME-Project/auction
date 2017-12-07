@@ -1,0 +1,5 @@
+useDynLib(auction.Rcpp)
+
+importFrom(Rcpp, evalCpp)
+
+exportPattern("^[[:alpha:]]+")

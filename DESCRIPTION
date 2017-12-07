@@ -1,0 +1,12 @@
+Package: auction.Rcpp
+Type: Package
+Title: Auction Algorithms
+Version: 1.0.0
+Date: 2017-12-06
+Author: Joseph D. Walsh III [aut, cre],
+    Keith O'Hara [ctb]
+Maintainer: Keith O'Hara <keith.ohara@nyu.edu>
+Description: A package to link with the auction library.
+License: GPL (>=2)
+Depends: R (>= 3.4.0), Rcpp, RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo (>= 0.6.400.2)
