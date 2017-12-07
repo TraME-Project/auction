@@ -122,8 +122,8 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     mfloat pcst; // primal cost
     mfloat dcst; // dual cost
 
-    std::chrono::high_resolution_clock::time_point t1, t2;
-    std::chrono::duration<mfloat> dur;
+    // std::chrono::high_resolution_clock::time_point t1, t2;
+    // std::chrono::duration<mfloat> dur;
 
     std::cout << "  ----------------------------------------------------------"
               << std::endl;
@@ -136,7 +136,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     //
     // run solvers
 
-    t1 = std::chrono::high_resolution_clock::now();
+    // t1 = std::chrono::high_resolution_clock::now();
 
     if (algo_choice == 1) // general auction
     {
@@ -186,8 +186,8 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         return 1;
     }
 
-    t2 = std::chrono::high_resolution_clock::now();
-    dur = std::chrono::duration_cast<std::chrono::duration<mfloat>>(t2 - t1);
+    // t2 = std::chrono::high_resolution_clock::now();
+    // dur = std::chrono::duration_cast<std::chrono::duration<mfloat>>(t2 - t1);
 
     //
 
