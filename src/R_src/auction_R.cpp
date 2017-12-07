@@ -35,8 +35,11 @@ SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, SEXP algorithm_R, SEXP 
         arma::mat solution_mat, dual_mat;
         
         auction(Phi,demand,supply,solution_mat,dual_mat,algo_choice,max_prob);
+
+        double primal_cost = arma::accu(solution_mat%Phi);
+        double dual_cost = arma::as_scalar(dual_mat.t()*arma::join_cols(supply,demand));
         //
-        return Rcpp::List::create(Rcpp::Named("solution") = solution_mat,Rcpp::Named("dual") = dual_mat);
+        return Rcpp::List::create(Rcpp::Named("solution") = solution_mat, Rcpp::Named("dual") = dual_mat, Rcpp::Named("primal_cost") = primal_cost, Rcpp::Named("dual_cost") = dual_cost);
     } catch( std::exception &ex ) {
         forward_exception_to_r( ex );
     } catch(...) {
