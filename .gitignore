@@ -1,7 +1,6 @@
 .DS_Store
 .Rproj.user
 .Rhistory
-src/Makevars
 src-i386/
 src-x64/
 src/auction/Makefile

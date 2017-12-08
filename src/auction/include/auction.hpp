@@ -30,7 +30,7 @@
     #include "armadillo"
 #endif
 
-int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& supply_vec, arma::mat& solution_mat, arma::mat& dual_mat, const int algo_choice, const bool max_prob);
+int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& supply_vec, arma::mat& solution_mat, double& primal_cost, arma::mat& dual_mat, double& dual_cost, const int algo_choice, const bool max_prob);
 
 //
 

@@ -9,7 +9,7 @@
 
 muint gVBS = 0; // verbosity (0, 1, or 2)
 
-int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& supply_vec, arma::mat& solution_mat, arma::mat& dual_mat, const int algo_choice, const bool max_prob)
+int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& supply_vec, arma::mat& solution_mat, double& primal_cost, arma::mat& dual_mat, double& dual_cost, const int algo_choice, const bool max_prob)
 {
     const long int NSINK = demand_vec.n_elem;
     const long int NSORC = supply_vec.n_elem;
@@ -119,8 +119,6 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
 
     objlist T;   // transport plan 
     mfvec PR;    // price vector
-    mfloat pcst; // primal cost
-    mfloat dcst; // dual cost
 
     // std::chrono::high_resolution_clock::time_point t1, t2;
     // std::chrono::duration<mfloat> dur;
@@ -198,11 +196,11 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     }
     else
     {
-        pcst = Primal(ARX, T, solution_mat, max_prob);
+        primal_cost = Primal(ARX, T, solution_mat, max_prob);
 
-        dcst = Dual(DWT, SWT, ARX, PR, dual_mat, max_prob);
+        dual_cost = Dual(DWT, SWT, ARX, PR, dual_mat, max_prob);
 
-        std::cout << "     Primal cost = " << pcst << ". Dual cost = " << dcst << "." << std::endl;
+        std::cout << "     Primal cost = " << primal_cost << ". Dual cost = " << dual_cost << "." << std::endl;
     }
 
     std::cout << "  ----------------------------------------------------------"
