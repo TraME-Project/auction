@@ -22,8 +22,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     
     mfloat eps = -1.0;
     mfloat min = -1.0;
-    
-    // muint seed = 0;
+
     mfloat stp = 0.25;
 
     mfvec DWT, SWT;
@@ -109,8 +108,8 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     objlist T;   // transport plan 
     mfvec PR;    // price vector
 
-    // std::chrono::high_resolution_clock::time_point t1, t2;
-    // std::chrono::duration<mfloat> dur;
+    std::chrono::high_resolution_clock::time_point t1, t2;
+    std::chrono::duration<mfloat> dur;
 
     std::cout << "  ----------------------------------------------------------"
               << std::endl;
@@ -123,7 +122,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     //
     // run solvers
 
-    // t1 = std::chrono::high_resolution_clock::now();
+    t1 = std::chrono::high_resolution_clock::now();
 
     if (algo_choice == 1) // general auction
     {
@@ -173,8 +172,8 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         return 1;
     }
 
-    // t2 = std::chrono::high_resolution_clock::now();
-    // dur = std::chrono::duration_cast<std::chrono::duration<mfloat>>(t2 - t1);
+    t2 = std::chrono::high_resolution_clock::now();
+    dur = std::chrono::duration_cast<std::chrono::duration<mfloat>>(t2 - t1);
 
     //
 
@@ -186,7 +185,6 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     else
     {
         primal_cost = Primal(ARX, T, solution_mat, max_prob);
-        std::cout << "primal done" << std::endl;
 
         dual_cost = Dual(DWT, SWT, ARX, PR, dual_mat, max_prob);
 
@@ -197,6 +195,9 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         solution_mat = arma::trans(solution_mat);
     }
 
+    std::cout << std::endl;
+    std::sprintf(str, "  Runtime: %13.3f sec", dur.count());
+    std::cout << str << std::endl;
     std::cout << "  ----------------------------------------------------------"
               << std::endl;
 
