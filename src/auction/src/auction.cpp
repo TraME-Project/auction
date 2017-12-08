@@ -16,11 +16,6 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
 
     bool rev = false; // if NSORC > NSINK
 
-    bool ap = false;
-    bool ga = false;
-    bool xo = false;
-    bool xp = false;
-
     char str[255];
 
     int err = 0;
@@ -34,7 +29,6 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     mfvec DWT, SWT;
     voblist ARX, RARX;
 
-    solution_mat.zeros(NSORC,NSINK);
     dual_mat.zeros(NSORC+NSINK,1);
 
     // muint gVBS = 0; // verbosity (0, 1, or 2)
@@ -47,11 +41,15 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         SWT.reserve(NSINK);
         ARX.resize(NSORC);
         RARX.resize(NSINK);
+
+        solution_mat.zeros(NSORC,NSINK);
     } else {
         DWT.reserve(NSINK);
         SWT.reserve(NSORC);
         ARX.resize(NSINK);
         RARX.resize(NSORC);
+
+        solution_mat.zeros(NSINK,NSORC);
     }
 
     for (int i=0; i < NSORC; i++) {
@@ -88,25 +86,16 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         }
     }
 
+    if (!rev) {
+
+    }
+
     //
 
-    if ((!ap) && (!ga) && (!xo) && (!xp)) {
-        ga = true;
-    }
+    arma::uvec n_nzcost = arma::find( Phi );
 
-    mfloat C = 0;
-    muint ar = 0;
-    for (muint i = 0; i < ARX.size(); i++)
-    {
-        for (muint j = 0; j < ARX[i].size(); j++)
-        {
-            ar++;
-            if (C < std::abs(ARX[i][j].c))
-            {
-                C = std::abs(ARX[i][j].c);
-            }
-        }
-    }
+    muint ar = n_nzcost.n_elem;
+    mfloat C = arma::abs(Phi.elem( n_nzcost )).max();
 
     if (eps < gEPS)
     {
@@ -197,10 +186,15 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     else
     {
         primal_cost = Primal(ARX, T, solution_mat, max_prob);
+        std::cout << "primal done" << std::endl;
 
         dual_cost = Dual(DWT, SWT, ARX, PR, dual_mat, max_prob);
 
         std::cout << "     Primal cost = " << primal_cost << ". Dual cost = " << dual_cost << "." << std::endl;
+    }
+
+    if (!rev) {
+        solution_mat = arma::trans(solution_mat);
     }
 
     std::cout << "  ----------------------------------------------------------"
