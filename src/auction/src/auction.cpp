@@ -1,6 +1,6 @@
 
 //
-//
+// Modification of 'main.cpp'
 //
 
 #include "auction.hpp"

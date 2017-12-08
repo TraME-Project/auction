@@ -1,5 +1,7 @@
 
 //
+// Modifications of functions in 'main.cpp'
+//
 
 #include <algorithm>  // std::find
 #include <cmath>      // std::abs, std::sqrt

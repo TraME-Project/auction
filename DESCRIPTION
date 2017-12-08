@@ -3,8 +3,8 @@ Type: Package
 Title: Auction Algorithms
 Version: 1.0.0
 Date: 2017-12-06
-Author: Joseph D. Walsh III [aut, cre],
-    Keith O'Hara [ctb]
+Author: Keith O'Hara [aut, cre],
+    Joseph D. Walsh III [aut]
 Maintainer: Keith O'Hara <keith.ohara@nyu.edu>
 Description: A package to link with the auction library.
 License: GPL (>=2)
