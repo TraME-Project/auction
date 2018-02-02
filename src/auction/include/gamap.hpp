@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #ifndef __GAMAP_HPP_INCLUDED
 #define __GAMAP_HPP_INCLUDED
 
@@ -43,6 +45,7 @@ class GAmap
     GAmap() : pEPS(1.0), pMN(1.0), pSTP(0.25){};
     GAmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
           const mfloat MX, const mfloat MN, const mfloat ST);
+    
     void Solve(objlist &T, mfvec &PR);
 
   private:

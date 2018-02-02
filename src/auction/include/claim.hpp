@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #ifndef __CLAIM_HPP_INCLUDED
 #define __CLAIM_HPP_INCLUDED
 
@@ -39,10 +41,12 @@ struct Claim
     Claim() : bdr(0), dst(0), pr(0.0), wt(0.0) {}
     Claim(mint b, mint d, mfloat p, mfloat w)
         : bdr(b), dst(d), pr(p), wt(w) {}
+    
     mint bdr;  // bidder node id number
     mint dst;  // destination/lot node id number
     mfloat pr; // price bid
     mfloat wt; // weight claimed
+    
     bool operator<(const Claim &c) const
     {
         return (c.pr - pr > gEPS) || (equal(pr, c.pr) && (c.wt - wt > gEPS));

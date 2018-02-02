@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #ifndef __GABID_HPP_INCLUDED
 #define __GABID_HPP_INCLUDED
 
@@ -40,18 +42,22 @@ class GAbid
     GAbid();
     GAbid(const muint id, const mfloat wt, const objlist &A)
         : pARC(A), pCRWT(0.0), pEPS(1.0), pID(id), pMXWT(wt){};
+
     bool Active() const { return (!equal(pMXWT, pCRWT)); };
     void MakeBid(const objlist &PR, Claim &C);
+
     void Pop(const mfloat amt)
     {
         pCRWT -= amt;
         return;
     };
+
     void Push(const mfloat amt)
     {
         pCRWT += amt;
         return;
     };
+
     void Refresh(const mfloat ep)
     {
         pEPS = ep;

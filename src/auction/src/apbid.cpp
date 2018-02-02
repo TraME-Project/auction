@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #include "apbid.hpp"
 
 /** --- MakeBid ----------------------------------------------------------------
@@ -33,18 +35,22 @@ Science Foundation.
 void APbid::MakeBid(const objlist &PR, Object &D)
 {
     D.j = -1;
+
     if (pMXWT > pCRWT)
     {
         D.i = mint(pID);
+
         if (pARC.size() > 1)
         {
             objlist M = pARC;
-            for (muint it = 0; it < M.size(); it++)
+            for (size_t it = 0; it < M.size(); it++)
             {
                 M[it].c -= PR[muint(M[it].j)].c;
             }
+
             std::nth_element(M.begin(), M.begin() + 1, M.end(),
                              [](const Object &a, const Object &b) -> bool { return (a.c > b.c); });
+            
             D.j = M[0].j;
             D.c = M[0].c + PR[muint(M[0].j)].c + pEPS - M[1].c;
         }
@@ -54,7 +60,6 @@ void APbid::MakeBid(const objlist &PR, Object &D)
             D.c = gINF;
         }
     }
-    return;
 }
 
 /// ----------------------------------------------------------------------------

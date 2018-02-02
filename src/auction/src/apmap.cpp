@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #include "apmap.hpp"
 
 /** --- Standard Constructor ---------------------------------------------------
@@ -37,10 +39,12 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
     pBDR.clear();
     pBID.clear();
     pPR.clear();
+
     if ((!DWT.empty()) && (!SWT.empty()))
     {
         bool isint = true;
         muint i = 0;
+        
         while ((isint) && (i < DWT.size()))
         {
             if (!equal(DWT[i], std::floor(DWT[i])))
@@ -49,7 +53,9 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
             }
             ++i;
         }
+
         i = 0;
+
         while ((isint) && (i < SWT.size()))
         {
             if (!equal(SWT[i], std::floor(SWT[i])))
@@ -58,6 +64,7 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
             }
             ++i;
         }
+
         if (!isint)
         {
             std::cout << "  WARNING: AUCTION requires integer weights."
@@ -72,15 +79,17 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
                 pGCD = gcd(pGCD, mint(DWT[i]));
                 i += 1;
             }
+
             i = 0;
             while ((i < SWT.size()) && (pGCD > 1))
             {
                 pGCD = gcd(pGCD, mint(SWT[i]));
                 i += 1;
             }
+
             muvec pos(1, 0);
             muint s = 0;
-            for (muint it = 0; it < SWT.size(); it++)
+            for (size_t it = 0; it < SWT.size(); it++)
             {
                 s += muint(SWT[it]) / muint(pGCD);
                 pos.emplace_back(s);
@@ -89,22 +98,24 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
                     pPR.emplace_back(0.0, -1, it);
                 }
             }
+
             pBID = objlist(pPR.size(), Object(0.0, -1, -1));
             pBDR.reserve(pPR.size());
             objlist tA;
+
             i = 0;
             for (muint it = 0; it < DWT.size(); it++)
             {
                 tA.clear();
-                for (muint m = 0; m < A[it].size(); m++)
+                for (size_t m = 0; m < A[it].size(); m++)
                 {
-                    for (muint n = 0;
-                         n < muint(SWT[muint(A[it][m].j)]) / muint(pGCD); n++)
+                    for (muint n = 0; n < muint(SWT[muint(A[it][m].j)]) / muint(pGCD); n++)
                     {
                         tA.emplace_back(A[it][m].c, A[it][m].j,
                                         pos[muint(A[it][m].j)] + n);
                     }
                 }
+
                 for (muint n = 0; n < muint(DWT[it]) / muint(pGCD); n++)
                 {
                     pBDR.emplace_back(i, it, 1, tA);
@@ -112,6 +123,7 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
                     i++;
                 }
             }
+
             if (gVBS > 0)
             {
                 char str[255];
@@ -130,18 +142,23 @@ void APmap::Solve(objlist &T, mfvec &PR)
 {
     T.clear();
     PR.clear();
+
     if (!pBDR.empty())
     {
         Auction();
         muint k;
-        muint n = 0;
+        size_t n = 0;
+
         std::sort(pPR.begin(), pPR.end(),
                   [](const Object &a, const Object &b) -> bool { return ((a.j < b.j) || ((a.j == b.j) && (a.i < b.i))); });
+        
         PR = mfvec(pPR.size(), 0.0);
-        for (muint it = 0; it < pPR.size(); it++)
+
+        for (size_t it = 0; it < pPR.size(); it++)
         {
             PR[muint(pPR[it].j)] = pPR[it].c;
         }
+
         while (n < pPR.size())
         {
             T.emplace_back(pGCD, pBDR[muint(pPR[n].i)].Class(), pPR[n].j);
@@ -161,7 +178,6 @@ void APmap::Solve(objlist &T, mfvec &PR)
             n += 1;
         }
     }
-    return;
 }
 
 /** --- Auction ----------------------------------------------------------------
@@ -171,17 +187,19 @@ void APmap::Auction()
     do
     {
         pEPS *= pSTP;
-        for (muint it = 0; it < pBDR.size(); it++)
+
+        for (size_t it = 0; it < pBDR.size(); it++)
         {
             pBDR[it].Refresh(pEPS);
         }
+
         for (auto it = pPR.begin(); it < pPR.end(); it++)
         {
             it->i = -1;
         }
+
         Round();
     } while (pEPS >= pMN);
-    return;
 }
 
 /** --- GCD --------------------------------------------------------------------
@@ -204,16 +222,18 @@ void APmap::Round()
         {
             pBDR[it].MakeBid(pPR, pBID[it]);
         }
+
         // select winners from bids
+
         UpdateClaims();
         avail = false;
         n = pBDR.size();
+
         while ((!avail) && (n > 0))
         {
             avail = pBDR[--n].Active();
         }
     }
-    return;
 }
 
 /** --- UpdateClaims -----------------------------------------------------------

@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #ifndef __SOPMAP_HPP_INCLUDED
 #define __SOPMAP_HPP_INCLUDED
 
@@ -43,6 +45,7 @@ class SOPmap
     SOPmap() : pEPS(1.0), pGCD(1), pMN(1.0), pSTP(0.25){};
     SOPmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
            const mfloat MX, const mfloat MN, const mfloat ST);
+    
     void Solve(objlist &T, mfvec &PR);
 
   private:
@@ -53,6 +56,7 @@ class SOPmap
     mfloat pMN;      // minimum epsilon value
     objlist pPR;     // vector of prices
     mfloat pSTP;     // epsilon step size
+    
     void Auction();
     mint gcd(const mint a, const mint b) const;
     void Round();

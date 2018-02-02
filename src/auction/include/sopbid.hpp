@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #ifndef __SOPBID_HPP_INCLUDED
 #define __SOPBID_HPP_INCLUDED
 
@@ -40,18 +42,22 @@ class SOPbid
     SOPbid() : pCRWT(0), pEPS(1.0), pID(0), pMXWT(0){};
     SOPbid(const muint inid, const muint wt, const objlist &A)
         : pARC(A), pCRWT(0), pEPS(1.0), pID(inid), pMXWT(wt){};
+
     bool Active() const { return (pMXWT > pCRWT); };
     void MakeBid(const objlist &PR, objlist &D);
+
     void Pop()
     {
         pCRWT -= 1;
         return;
     };
+
     void Push()
     {
         pCRWT += 1;
         return;
     };
+    
     void Refresh(const mfloat ep)
     {
         pEPS = ep;

@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #ifndef __GALOT_HPP_INCLUDED
 #define __GALOT_HPP_INCLUDED
 
@@ -41,13 +43,17 @@ class GAlot
     GAlot();
     GAlot(const muint id, const mfloat wt)
         : pCLMS(new cllist), pFRWT(wt), pID(id), pMXWT(wt){};
+
     bool Active() const { return (pFRWT > gEPS); };
+
     void Export(cllist &CV) const
     {
         CV = *pCLMS;
         return;
     };
+
     void UpdateClaim(Claim &C, Object &P, GAbdlst &B);
+
     void Refresh()
     {
         pCLMS->clear();

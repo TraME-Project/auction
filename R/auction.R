@@ -21,8 +21,7 @@
 
 auction <- function(Phi,demand,supply,algorithm=1,max_prob=TRUE)
 {
-    #
     res <- .Call("auction_R", Phi,demand,supply,algorithm,max_prob, PACKAGE = "auction.Rcpp")
-    #
+    
     return(res)
 }

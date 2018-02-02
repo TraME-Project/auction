@@ -1,0 +1,4 @@
+#! /bin/sh
+## cleanup script
+
+rm -f ./*so ./R_src/*.o ./auction/src/*.o

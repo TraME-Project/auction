@@ -26,6 +26,8 @@ those of the author and do not necessarily reflect the views of the National
 Science Foundation.
 ---------------------------------------------------------------------------- **/
 
+// modified by Keith O'Hara
+
 #ifndef __OBJECT_HPP_INCLUDED
 #define __OBJECT_HPP_INCLUDED
 
@@ -36,9 +38,11 @@ struct Object
 {
     Object() : c(0.0), i(0), j(0) {}
     Object(mfloat ci, mint ii, mint ji) : c(ci), i(ii), j(ji) {}
+    
     mfloat c; // cost, expense, flow, price (depending on context)
     mint i;   // bidder node id number
     mint j;   // destination/lot node id number
+
     bool operator<(const Object &o) const { return (c < o.c); };
     bool operator>(const Object &o) const { return (c > o.c); };
     bool operator<=(const Object &o) const { return (c <= o.c); };

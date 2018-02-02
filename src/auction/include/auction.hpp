@@ -1,6 +1,7 @@
-
 //
 // Modifications of functions in 'main.cpp'
+//
+// Keith O'Hara
 //
 
 #include <algorithm>  // std::find
@@ -72,11 +73,11 @@ mfloat Dual(const mfvec &DWT, const mfvec &SWT, const voblist &ARX, const mfvec 
     mfloat dcst = 0.0;
     mfvec M;
 
-    for (muint i = 0; i < DWT.size(); i++)
+    for (size_t i = 0; i < DWT.size(); i++)
     {
         M.clear();
 
-        for (muint j = 0; j < ARX[i].size(); j++)
+        for (size_t j = 0; j < ARX[i].size(); j++)
         {
             M.push_back(ARX[i][j].c - PR[muint(ARX[i][j].j)]);
         }
@@ -86,14 +87,15 @@ mfloat Dual(const mfvec &DWT, const mfvec &SWT, const voblist &ARX, const mfvec 
         dcst += DWT[i] * dual_mat(i,0);
     }
 
-    for (muint it = 0; it < SWT.size(); it++)
+    for (size_t it = 0; it < SWT.size(); it++)
     {
         dual_mat(it + DWT.size(),0) = PR[it];
 
         dcst += SWT[it] * PR[it];
     }
 
-    if (max_prob == false) {
+    if (max_prob == false)
+    {
         dcst = - dcst;
         dual_mat = - dual_mat;
     }
