@@ -38,14 +38,14 @@ void GAbid::MakeBid(const objlist &PR, Claim &C)
         if (pARC.size() > 1)
         {
             objlist M = pARC;
-            for (muint it = 0; it < M.size(); it++)
+            for (uint_t it = 0; it < M.size(); it++)
             {
-                M[it].c -= PR[muint(M[it].j)].c;
+                M[it].c -= PR[uint_t(M[it].j)].c;
             }
             std::nth_element(M.begin(), M.begin() + 1, M.end(),
                              [](const Object &a, const Object &b) -> bool { return (a.c > b.c); });
             C.dst = M[0].j;
-            C.pr = M[0].c + PR[muint(M[0].j)].c + pEPS - M[1].c;
+            C.pr = M[0].c + PR[uint_t(M[0].j)].c + pEPS - M[1].c;
         }
         else
         {

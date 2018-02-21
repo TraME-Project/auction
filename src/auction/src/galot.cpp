@@ -58,7 +58,7 @@ void GAlot::UpdateClaim(Claim &C, Object &P, GAbdlst &B)
             pFRWT = C.wt;
             if (ri->bdr > -1)
             {
-                B[muint(ri->bdr)].Pop(df);
+                B[uint_t(ri->bdr)].Pop(df);
             }
             tmp.wt -= df;
             df = 0.0;
@@ -70,7 +70,7 @@ void GAlot::UpdateClaim(Claim &C, Object &P, GAbdlst &B)
             pFRWT += ri->wt;
             if (ri->bdr > -1)
             {
-                B[muint(ri->bdr)].Pop(ri->wt);
+                B[uint_t(ri->bdr)].Pop(ri->wt);
             }
             df -= ri->wt;
             pCLMS->erase(ri);
@@ -90,7 +90,7 @@ void GAlot::UpdateClaim(Claim &C, Object &P, GAbdlst &B)
         // add claim to dst list
         pCLMS->emplace_hint(pCLMS->cbegin(), C);
         pFRWT -= C.wt;
-        B[muint(C.bdr)].Push(C.wt);
+        B[uint_t(C.bdr)].Push(C.wt);
         if (pFRWT < gEPS)
         {
             P.c = pCLMS->begin()->pr;

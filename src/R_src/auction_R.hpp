@@ -24,6 +24,8 @@
 
 #include "auction.hpp"
 
-RcppExport SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, SEXP algorithm_R, SEXP max_prob_R);
+RcppExport SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, 
+                          SEXP algorithm_R, SEXP max_prob_R, 
+                          SEXP eps_init_R, SEXP eps_min_R);
 
 #endif

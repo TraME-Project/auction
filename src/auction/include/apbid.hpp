@@ -32,18 +32,18 @@ Science Foundation.
 #define __APBID_HPP_INCLUDED
 
 #include <algorithm>  // std::nth_element
-#include "glob.hpp"   // mfloat, muint
+#include "glob.hpp"   // mfloat, uint_t
 #include "object.hpp" // Object, objlist
 
 class APbid
 {
   public:
     APbid() : pCRWT(0), pEPS(1.0), pID(0), pMXWT(0){};
-    APbid(const muint inid, const muint sim, const muint wt, const objlist &A)
+    APbid(const uint_t inid, const uint_t sim, const uint_t wt, const objlist &A)
         : pARC(A), pCRWT(0), pEPS(1.0), pID(inid), pMXWT(wt), pSIM(sim){};
 
     bool Active() const { return (pMXWT > pCRWT); };
-    muint Class() const { return pSIM; };
+    uint_t Class() const { return pSIM; };
     void MakeBid(const objlist &PR, Object &D);
 
     void Pop()
@@ -67,11 +67,11 @@ class APbid
 
   private:
     objlist pARC; // arc costs
-    muint pCRWT;  // total weight claimed by bidder
+    uint_t pCRWT;  // total weight claimed by bidder
     mfloat pEPS;  // epsilon
-    muint pID;    // bidder id number
-    muint pMXWT;  // total weight needed by bidder
-    muint pSIM;   // bidder similarity class
+    uint_t pID;    // bidder id number
+    uint_t pMXWT;  // total weight needed by bidder
+    uint_t pSIM;   // bidder similarity class
 };
 
 typedef std::vector<APbid> APbidlist;

@@ -35,7 +35,7 @@ Science Foundation.
 #include <cmath>      // std::floor
 #include <iostream>   // std::cout, std::endl, std::sprintf
 #include <vector>     // std::vector
-#include "glob.hpp"   // mfloat, mfvec, mint, muint
+#include "glob.hpp"   // mfloat, mfvec, mint, uint_t
 #include "object.hpp" // objlist, voblist
 #include "apbid.hpp"  // APbidlist
 
@@ -51,6 +51,7 @@ class APmap
   private:
     APbidlist pBDR; // vector of bidders
     objlist pBID;   // vector of current bids
+    
     mfloat pEPS;    // current epsilon value
     mint pGCD;      // gcd of weights
     mfloat pMN;     // minimum epsilon value

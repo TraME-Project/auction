@@ -35,21 +35,23 @@ Science Foundation.
 #include <limits>     // std::numeric_limits
 
 typedef long int          mint;
-typedef unsigned long int muint;
+typedef unsigned long int uint_t;
 typedef double            mfloat;
 
 typedef std::vector<mfloat> mfvec;
 typedef std::vector<mint>   mivec;
-typedef std::vector<muint>  muvec;
+typedef std::vector<uint_t>  muvec;
 
 static const mfloat gEPS = std::sqrt(std::numeric_limits<mfloat>::epsilon());
 static const mfloat gINF = std::numeric_limits<mfloat>::infinity();
 
 // extern mfloat gEPS;
 // extern mfloat gINF;
-extern muint gVBS;
+extern uint_t gVBS;
 
-inline bool equal(const mfloat x, const mfloat y)
+inline
+bool
+equal(const mfloat x, const mfloat y)
 {
   return (std::abs (x-y) <
           std::max (gEPS, gEPS * std::max (std::abs (x), std::abs (y))));

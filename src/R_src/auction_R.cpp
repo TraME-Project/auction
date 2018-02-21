@@ -22,29 +22,24 @@
 #include "auction_R.hpp"
 using namespace Rcpp;
 
-SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, SEXP algorithm_R, SEXP max_prob_R)
+SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, SEXP algorithm_R, SEXP max_prob_R, SEXP eps_init_R, SEXP eps_min_R)
 {
-    try {
-        // arma::mat Phi = as<arma::mat>(Phi_R);
-        // arma::vec demand = as<arma::vec>(demand_R);
-        // arma::vec supply = as<arma::vec>(supply_R);
-
-        // int algo_choice = as<int>(algorithm_R);
-        // bool max_prob = as<bool>(max_prob_R);
-
+    try
+    {
         double primal_cost, dual_cost;
         arma::mat solution_mat, dual_mat;
         
-        auction(as<arma::mat>(Phi_R),as<arma::vec>(demand_R),as<arma::vec>(supply_R),solution_mat,primal_cost,dual_mat,dual_cost,as<int>(algorithm_R),as<bool>(max_prob_R));
-
-        // double primal_cost = arma::accu(solution_mat%Phi);
-        // double dual_cost = arma::as_scalar(dual_mat.t()*arma::join_cols(supply,demand));
-        //
-        return Rcpp::List::create(Rcpp::Named("solution") = solution_mat, Rcpp::Named("dual") = dual_mat, Rcpp::Named("primal_cost") = primal_cost, Rcpp::Named("dual_cost") = dual_cost);
+        auction(as<arma::mat>(Phi_R),as<arma::vec>(demand_R),as<arma::vec>(supply_R),
+                solution_mat,primal_cost,dual_mat,dual_cost,
+                as<int>(algorithm_R),as<bool>(max_prob_R),
+                as<mfloat>(eps_init_R),as<mfloat>(eps_min_R));
+        
+        return Rcpp::List::create(Rcpp::Named("solution") = solution_mat, Rcpp::Named("dual") = dual_mat, 
+                                  Rcpp::Named("primal_cost") = primal_cost, Rcpp::Named("dual_cost") = dual_cost);
     } catch( std::exception &ex ) {
         forward_exception_to_r( ex );
     } catch(...) {
-        ::Rf_error( "trame: C++ exception (unknown reason)" );
+        ::Rf_error( "auction: C++ exception (unknown reason)" );
     }
     return R_NilValue;
 }

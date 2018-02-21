@@ -42,8 +42,11 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
 
     if ((!DWT.empty()) && (!SWT.empty()))
     {
+
+        // check for integer weights
+
         bool isint = true;
-        muint i = 0;
+        uint_t i = 0;
         
         while ((isint) && (i < DWT.size()))
         {
@@ -64,6 +67,8 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
             }
             ++i;
         }
+
+        //
 
         if (!isint)
         {
@@ -87,13 +92,16 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
                 i += 1;
             }
 
+            //
+
             muvec pos(1, 0);
-            muint s = 0;
+            uint_t s = 0;
+            
             for (size_t it = 0; it < SWT.size(); it++)
             {
-                s += muint(SWT[it]) / muint(pGCD);
+                s += uint_t(SWT[it]) / uint_t(pGCD);
                 pos.emplace_back(s);
-                for (muint n = 0; n < muint(SWT[it]) / muint(pGCD); n++)
+                for (uint_t n = 0; n < uint_t(SWT[it]) / uint_t(pGCD); n++)
                 {
                     pPR.emplace_back(0.0, -1, it);
                 }
@@ -104,19 +112,19 @@ APmap::APmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
             objlist tA;
 
             i = 0;
-            for (muint it = 0; it < DWT.size(); it++)
+            for (uint_t it = 0; it < DWT.size(); it++)
             {
                 tA.clear();
                 for (size_t m = 0; m < A[it].size(); m++)
                 {
-                    for (muint n = 0; n < muint(SWT[muint(A[it][m].j)]) / muint(pGCD); n++)
+                    for (uint_t n = 0; n < uint_t(SWT[uint_t(A[it][m].j)]) / uint_t(pGCD); n++)
                     {
                         tA.emplace_back(A[it][m].c, A[it][m].j,
-                                        pos[muint(A[it][m].j)] + n);
+                                        pos[uint_t(A[it][m].j)] + n);
                     }
                 }
 
-                for (muint n = 0; n < muint(DWT[it]) / muint(pGCD); n++)
+                for (uint_t n = 0; n < uint_t(DWT[it]) / uint_t(pGCD); n++)
                 {
                     pBDR.emplace_back(i, it, 1, tA);
                     pBDR.back().Refresh(pEPS);
@@ -146,7 +154,7 @@ void APmap::Solve(objlist &T, mfvec &PR)
     if (!pBDR.empty())
     {
         Auction();
-        muint k;
+        uint_t k;
         size_t n = 0;
 
         std::sort(pPR.begin(), pPR.end(),
@@ -156,16 +164,16 @@ void APmap::Solve(objlist &T, mfvec &PR)
 
         for (size_t it = 0; it < pPR.size(); it++)
         {
-            PR[muint(pPR[it].j)] = pPR[it].c;
+            PR[uint_t(pPR[it].j)] = pPR[it].c;
         }
 
         while (n < pPR.size())
         {
-            T.emplace_back(pGCD, pBDR[muint(pPR[n].i)].Class(), pPR[n].j);
+            T.emplace_back(pGCD, pBDR[uint_t(pPR[n].i)].Class(), pPR[n].j);
             k = n + 1;
             while ((k < pPR.size()) && (pPR[k].j == pPR[n].j))
             {
-                if (pBDR[muint(pPR[k].i)].Class() != pBDR[muint(pPR[n].i)].Class())
+                if (pBDR[uint_t(pPR[k].i)].Class() != pBDR[uint_t(pPR[n].i)].Class())
                 {
                     k += 1;
                 }
@@ -214,11 +222,13 @@ mint APmap::gcd(const mint a, const mint b) const
 void APmap::Round()
 {
     bool avail = true;
-    muint n;
+
+    uint_t n;
+
     while (avail)
     {
         // get new bids
-        for (muint it = 0; it < pBDR.size(); it++)
+        for (uint_t it = 0; it < pBDR.size(); it++)
         {
             pBDR[it].MakeBid(pPR, pBID[it]);
         }
@@ -241,31 +251,35 @@ void APmap::Round()
 void APmap::UpdateClaims()
 {
     std::vector<bool> ch(pPR.size(), false);
-    for (muint it = 0; it < pBID.size(); it++)
+
+    for (uint_t it = 0; it < pBID.size(); it++)
     {
-        if ((pBID[it].j > -1) && (pPR[muint(pBID[it].j)] < pBID[it]))
+        if ((pBID[it].j > -1) && (pPR[uint_t(pBID[it].j)] < pBID[it]))
         {
-            if (!ch[muint(pBID[it].j)])
+            if (!ch[uint_t(pBID[it].j)])
             {
-                ch[muint(pBID[it].j)] = true;
-                if (pPR[muint(pBID[it].j)].i != -1)
+                ch[uint_t(pBID[it].j)] = true;
+
+                if (pPR[uint_t(pBID[it].j)].i != -1)
                 {
-                    pBDR[muint(pPR[muint(pBID[it].j)].i)].Pop();
+                    pBDR[uint_t(pPR[uint_t(pBID[it].j)].i)].Pop();
                 }
             }
-            pPR[muint(pBID[it].j)].c = pBID[it].c;
-            pPR[muint(pBID[it].j)].i = pBID[it].i;
+
+            pPR[uint_t(pBID[it].j)].c = pBID[it].c;
+            pPR[uint_t(pBID[it].j)].i = pBID[it].i;
         }
     }
+
     // apply results to bidders
-    for (muint k = 0; k < ch.size(); k++)
+
+    for (uint_t k = 0; k < ch.size(); k++)
     {
         if (ch[k])
         {
-            pBDR[muint(pPR[k].i)].Push();
+            pBDR[uint_t(pPR[k].i)].Push();
         }
     }
-    return;
 }
 
 /// ----------------------------------------------------------------------------

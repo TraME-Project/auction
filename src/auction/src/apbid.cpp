@@ -45,14 +45,14 @@ void APbid::MakeBid(const objlist &PR, Object &D)
             objlist M = pARC;
             for (size_t it = 0; it < M.size(); it++)
             {
-                M[it].c -= PR[muint(M[it].j)].c;
+                M[it].c -= PR[uint_t(M[it].j)].c;
             }
 
             std::nth_element(M.begin(), M.begin() + 1, M.end(),
                              [](const Object &a, const Object &b) -> bool { return (a.c > b.c); });
             
             D.j = M[0].j;
-            D.c = M[0].c + PR[muint(M[0].j)].c + pEPS - M[1].c;
+            D.c = M[0].c + PR[uint_t(M[0].j)].c + pEPS - M[1].c;
         }
         else
         {

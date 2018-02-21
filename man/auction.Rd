@@ -31,7 +31,7 @@ auction(Phi,demand,supply,algorithm=1,max_prob=TRUE)
 }
 
 \value{
-The function returns a list of objects...}
+The function returns a list of objects...
 }
 
 \author{Keith O'Hara}

@@ -32,7 +32,7 @@ Science Foundation.
  **/
 void SOPbid::MakeBid(const objlist &PR, objlist &D)
 {
-    muint ct = muint(pMXWT - pCRWT);
+    uint_t ct = uint_t(pMXWT - pCRWT);
     if (ct > 0)
     {
         mfloat W;
@@ -41,9 +41,9 @@ void SOPbid::MakeBid(const objlist &PR, objlist &D)
         Mn.reserve(pARC.size());
         bool bc = true;
         mint id = -1;
-        for (muint it = 0; it < pARC.size(); it++)
+        for (uint_t it = 0; it < pARC.size(); it++)
         {
-            if (mint(pID) == PR[muint(pARC[it].j)].i)
+            if (mint(pID) == PR[uint_t(pARC[it].j)].i)
             {
                 Mo.emplace_back(pARC[it].c, pARC[it].i, pARC[it].j);
                 if (bc)
@@ -60,7 +60,7 @@ void SOPbid::MakeBid(const objlist &PR, objlist &D)
             }
             else
             {
-                Mn.emplace_back(pARC[it].c - PR[muint(pARC[it].j)].c, pARC[it].i, pARC[it].j);
+                Mn.emplace_back(pARC[it].c - PR[uint_t(pARC[it].j)].c, pARC[it].i, pARC[it].j);
             }
         }
         if (ct >= Mn.size())
@@ -83,7 +83,7 @@ void SOPbid::MakeBid(const objlist &PR, objlist &D)
                 }
                 if (Mn[ct].i == id)
                 {
-                    muint ti = 0;
+                    uint_t ti = 0;
                     while ((bc) && (ti < ct))
                     {
                         if (Mn[ti++].i != id)
@@ -95,7 +95,7 @@ void SOPbid::MakeBid(const objlist &PR, objlist &D)
                     { // W is unsuitable; need 1st not-ts element
                         std::sort(Mn.begin(), Mn.end(),
                                   [](const Object &a, const Object &b) -> bool { return (a.c > b.c); });
-                        muint tt = ct + 1;
+                        uint_t tt = ct + 1;
                         while ((tt < Mn.size()) && (Mn[tt].i == id))
                         {
                             ++tt;
@@ -114,13 +114,13 @@ void SOPbid::MakeBid(const objlist &PR, objlist &D)
         }
         Object bd;
         bd.i = mint(pID);
-        for (muint n = 0; n < Mo.size(); n++)
+        for (uint_t n = 0; n < Mo.size(); n++)
         {
             bd.c = Mo[n].c + pEPS - W;
             bd.j = Mo[n].j;
             D[n] = bd;
         }
-        for (muint n = 0; n < ct; n++)
+        for (uint_t n = 0; n < ct; n++)
         {
             if (Mn[n].c <= -gINF)
             {
@@ -128,7 +128,7 @@ void SOPbid::MakeBid(const objlist &PR, objlist &D)
             }
             else
             {
-                bd.c = Mn[n].c + PR[muint(Mn[n].j)].c + pEPS - W;
+                bd.c = Mn[n].c + PR[uint_t(Mn[n].j)].c + pEPS - W;
             }
             bd.j = Mn[n].j;
             D[n + Mo.size()] = bd;

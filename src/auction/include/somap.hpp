@@ -35,7 +35,7 @@ Science Foundation.
 #include <cmath>      // std::floor
 #include <iostream>   // std::cout, std::endl, std::sprintf
 #include <vector>     // std::vector
-#include "glob.hpp"   // mfloat, mfvec, mint, muint
+#include "glob.hpp"   // mfloat, mfvec, mint, uint_t
 #include "object.hpp" // objlist, voblist
 #include "sobid.hpp"  // SObidlist
 

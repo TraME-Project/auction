@@ -33,7 +33,7 @@ Science Foundation.
 
 #include <iostream>   // std::cout, std::endl, std::sprintf
 #include <vector>     // std::vector
-#include "glob.hpp"   // mfloat, mfvec, mint, muint
+#include "glob.hpp"   // mfloat, mfvec, mint, uint_t
 #include "claim.hpp"  // cllist, clvec
 #include "object.hpp" // objlist, voblist
 #include "gabid.hpp"  // GAbdlst

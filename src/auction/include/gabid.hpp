@@ -32,7 +32,7 @@ Science Foundation.
 #define __GABID_HPP_INCLUDED
 
 #include <algorithm>  // std::nth_element
-#include "glob.hpp"   // mfloat, muint
+#include "glob.hpp"   // mfloat, uint_t
 #include "claim.hpp"  // Claim
 #include "object.hpp" // objlist
 
@@ -40,7 +40,7 @@ class GAbid
 {
   public:
     GAbid();
-    GAbid(const muint id, const mfloat wt, const objlist &A)
+    GAbid(const uint_t id, const mfloat wt, const objlist &A)
         : pARC(A), pCRWT(0.0), pEPS(1.0), pID(id), pMXWT(wt){};
 
     bool Active() const { return (!equal(pMXWT, pCRWT)); };
@@ -69,7 +69,7 @@ class GAbid
     objlist pARC; // arc costs
     mfloat pCRWT; // total weight claimed by bidder
     mfloat pEPS;  // epsilon
-    muint pID;    // bidder id number
+    uint_t pID;    // bidder id number
     mfloat pMXWT; // total weight needed by bidder
 };
 

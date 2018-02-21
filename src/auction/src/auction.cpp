@@ -7,9 +7,11 @@
 
 //
 
-muint gVBS = 0; // verbosity (0, 1, or 2)
+uint_t gVBS = 0; // verbosity (0, 1, or 2)
 
-int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& supply_vec, arma::mat& solution_mat, double& primal_cost, arma::mat& dual_mat, double& dual_cost, const int algo_choice, const bool max_prob)
+int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& supply_vec, 
+            arma::mat& solution_mat, double& primal_cost, arma::mat& dual_mat, double& dual_cost, 
+            const int algo_choice, const bool max_prob, mfloat eps, mfloat eps_min)
 {
     const long int NSINK = demand_vec.n_elem;
     const long int NSORC = supply_vec.n_elem;
@@ -20,8 +22,8 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
 
     int err = 0;
     
-    mfloat eps = -1.0;
-    mfloat min = -1.0;
+    // mfloat eps = -1.0;
+    // mfloat eps_min = -1.0;
 
     mfloat stp = 0.25;
 
@@ -30,7 +32,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
 
     dual_mat.zeros(NSORC+NSINK,1);
 
-    // muint gVBS = 0; // verbosity (0, 1, or 2)
+    // uint_t gVBS = 0; // verbosity (0, 1, or 2)
 
     //
 
@@ -51,7 +53,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         solution_mat.zeros(NSINK,NSORC);
     }
 
-    for (int i=0; i < NSORC; i++) {
+    for (uint_t i=0; i < NSORC; i++) {
         mfloat AMT = supply_vec(i);
         if (rev) {
             DWT.push_back(AMT);
@@ -60,7 +62,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         }
     }
 
-    for (int j=0; j < NSINK; j++) {
+    for (uint_t j=0; j < NSINK; j++) {
         mfloat AMT = demand_vec(j);
         if (rev) {
             SWT.push_back(AMT);
@@ -69,8 +71,8 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         }
     }
 
-    for (int i=0; i < NSORC; i++) {
-        for (int j=0; j < NSINK; j++) {
+    for (uint_t i=0; i < NSORC; i++) {
+        for (uint_t j=0; j < NSINK; j++) {
             if (Phi(i,j) != 0.0) {
                 mfloat CST = (max_prob) ? Phi(i,j) : - Phi(i,j);
 
@@ -85,24 +87,20 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         }
     }
 
-    if (!rev) {
-
-    }
-
     //
 
     arma::uvec n_nzcost = arma::find( Phi );
 
-    muint ar = n_nzcost.n_elem;
+    uint_t ar = n_nzcost.n_elem;
     mfloat C = arma::abs(Phi.elem( n_nzcost )).max();
 
     if (eps < gEPS)
     {
         eps = C / 5.0;
     }
-    if (min < gEPS)
+    if (eps_min < gEPS)
     {
-        min = 1.0 / mfloat(SWT.size());
+        eps_min = 1.0 / std::min( mfloat(SWT.size()), mfloat(DWT.size()) );
     }
 
     objlist T;   // transport plan 
@@ -116,7 +114,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     std::sprintf(str, "  GRAPH: %lu sinks, %lu sources, %lu arcs", NSINK,
                  NSORC, ar);
     std::cout << str << std::endl;
-    std::sprintf(str, "  EPS  : %f starting, %e minimum", eps, min);
+    std::sprintf(str, "  EPS  : %f starting, %e minimum", eps, eps_min);
     std::cout << str << std::endl;
 
     //
@@ -129,21 +127,21 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         std::cout << std::endl;
         std::cout << "  General Auction:" << std::endl;
 
-        GArun(DWT, SWT, ARX, eps, min, stp, T, PR);
+        GArun(DWT, SWT, ARX, eps, eps_min, stp, T, PR);
     }
     else if (algo_choice == 2) // assignment auction
     {
         std::cout << std::endl;
         std::cout << "  Assignment Auction:" << std::endl;
 
-        APrun(DWT, SWT, ARX, eps, min, stp, T, PR);
+        APrun(DWT, SWT, ARX, eps, eps_min, stp, T, PR);
     }
     else if (algo_choice == 3) // auction - similar objects
     {
         std::cout << std::endl;
         std::cout << "  Auction-SO:" << std::endl;
 
-        SOrun(DWT, SWT, ARX, eps, min, stp, T, PR);
+        SOrun(DWT, SWT, ARX, eps, eps_min, stp, T, PR);
     }
     else if (algo_choice == 4) // auction - similar objects and persons
     {
@@ -151,7 +149,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         std::cout << "  Auction-SOP:" << std::endl;
 
         objlist S;
-        SOPrun(SWT, DWT, RARX, eps, min, stp, S, PR);
+        SOPrun(SWT, DWT, RARX, eps, eps_min, stp, S, PR);
 
         if (S.empty())
         {
@@ -160,7 +158,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
         else
         {
             T.clear();
-            for (muint it = 0; it < S.size(); it++)
+            for (uint_t it = 0; it < S.size(); it++)
             {
                 T.emplace_back(S[it].c, S[it].j, S[it].i);
             }

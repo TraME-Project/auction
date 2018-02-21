@@ -39,9 +39,9 @@ void SObid::MakeBid(const objlist &PR, Object &D)
         if (pARC.size() > 1)
         {
             objlist M = pARC;
-            for (muint it = 0; it < M.size(); it++)
+            for (uint_t it = 0; it < M.size(); it++)
             {
-                M[it].c -= PR[muint(M[it].j)].c;
+                M[it].c -= PR[uint_t(M[it].j)].c;
             }
             std::nth_element(M.begin(), M.begin() + 1, M.end(),
                              [](const Object &a, const Object &b) -> bool { return (a.c > b.c); });
@@ -54,7 +54,7 @@ void SObid::MakeBid(const objlist &PR, Object &D)
             {
                 std::sort(M.begin(), M.end(),
                           [](const Object &a, const Object &b) -> bool { return (a.c > b.c); });
-                muint ct = 2;
+                uint_t ct = 2;
                 while ((ct < M.size()) && (M[ct].i == M[0].i))
                 {
                     ++ct;
@@ -69,7 +69,7 @@ void SObid::MakeBid(const objlist &PR, Object &D)
                 }
             }
             D.j = M[0].j;
-            D.c = M[0].c + PR[muint(M[0].j)].c + pEPS - W;
+            D.c = M[0].c + PR[uint_t(M[0].j)].c + pEPS - W;
         }
         else
         {

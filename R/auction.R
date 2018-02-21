@@ -19,9 +19,12 @@
 ##
 ################################################################################
 
-auction <- function(Phi,demand,supply,algorithm=1,max_prob=TRUE)
+auction <- function(Phi, demand, supply, algorithm=1, max_prob=TRUE, 
+                    eps_init = - 1.0, eps_min = - 1.0)
 {
-    res <- .Call("auction_R", Phi,demand,supply,algorithm,max_prob, PACKAGE = "auction.Rcpp")
+    # note: eps_init and/or eps_min set to < 0 will lead to default values
+    res <- .Call("auction_R", Phi,demand,supply,algorithm,max_prob,
+                 eps_init,eps_min, PACKAGE = "auction.Rcpp")
     
     return(res)
 }

@@ -12,3 +12,7 @@ q  <-  rep(1,m)
 q[1] <- 2
 
 auction(cost,q,p,1,FALSE)
+
+auction(cost,q,p,4,FALSE, eps_init = 0.5, eps_min = 0.01)
+auction(cost,q,p,3,FALSE, eps_init = 0.5, eps_min = 0.01)
+auction(cost,q,p,1,FALSE)

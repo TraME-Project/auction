@@ -42,20 +42,20 @@ GAmap::GAmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
     {
         pLTS.reserve(SWT.size());
         pPR.reserve(SWT.size());
-        for (muint it = 0; it < SWT.size(); it++)
+        for (uint_t it = 0; it < SWT.size(); it++)
         {
             pLTS.emplace_back(it, SWT[it]);
             pPR.emplace_back(0.0, -1, it);
         }
         
         pCLM.reserve(DWT.size());
-        for (muint it = 0; it < DWT.size(); it++)
+        for (uint_t it = 0; it < DWT.size(); it++)
         {
             pCLM.emplace_back();
         }
 
         pBDR.reserve(DWT.size());
-        for (muint it = 0; it < DWT.size(); it++)
+        for (uint_t it = 0; it < DWT.size(); it++)
         {
             pBDR.emplace_back(it, DWT[it], A[it]);
             pBDR.back().Refresh(pEPS);
@@ -82,17 +82,17 @@ void GAmap::Solve(objlist &T, mfvec &PR)
     {
         Auction();
         PR = mfvec(pPR.size(), 0.0);
-        for (muint it = 0; it < pPR.size(); it++)
+        for (uint_t it = 0; it < pPR.size(); it++)
         {
-            PR[muint(pPR[it].j)] = pPR[it].c;
+            PR[uint_t(pPR[it].j)] = pPR[it].c;
         }
 
         Object O;
-        muint st;
+        uint_t st;
         bool dup;
         cllist CL;
 
-        for (muint j = 0; j < pLTS.size(); j++)
+        for (uint_t j = 0; j < pLTS.size(); j++)
         {
             st = T.size();
             O.j = mint(j);
@@ -112,7 +112,7 @@ void GAmap::Solve(objlist &T, mfvec &PR)
 
                     // test solution for duplicate arc
 
-                    for (muint i = st; i < T.size(); i++)
+                    for (uint_t i = st; i < T.size(); i++)
                     {
                         if (T[i].i == O.i)
                         {
@@ -143,11 +143,11 @@ void GAmap::Auction()
             it->i = -1;
         }
         pEPS *= pSTP;
-        for (muint it = 0; it < pBDR.size(); it++)
+        for (uint_t it = 0; it < pBDR.size(); it++)
         {
             pBDR[it].Refresh(pEPS);
         }
-        for (muint it = 0; it < pLTS.size(); it++)
+        for (uint_t it = 0; it < pLTS.size(); it++)
         {
             pLTS[it].Refresh();
         }
@@ -168,20 +168,20 @@ mint GAmap::gcd(const mint a, const mint b) const
 void GAmap::Round()
 {
     bool avail = true;
-    muint n;
+    uint_t n;
     while (avail)
     {
         // get new bids
-        for (muint it = 0; it < pBDR.size(); it++)
+        for (uint_t it = 0; it < pBDR.size(); it++)
         {
             pBDR[it].MakeBid(pPR, pCLM[it]);
         }
         // select winners from bids
-        for (muint it = 0; it < pCLM.size(); it++)
+        for (uint_t it = 0; it < pCLM.size(); it++)
         {
             if (pCLM[it].dst != -1)
             {
-                pLTS[muint(pCLM[it].dst)].UpdateClaim(pCLM[it], pPR[muint(pCLM[it].dst)], pBDR);
+                pLTS[uint_t(pCLM[it].dst)].UpdateClaim(pCLM[it], pPR[uint_t(pCLM[it].dst)], pBDR);
             }
         }
         // decide if round is over

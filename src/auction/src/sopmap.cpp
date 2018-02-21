@@ -40,7 +40,7 @@ SOPmap::SOPmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
     if ((!DWT.empty()) && (!SWT.empty()))
     {
         bool isint = true;
-        muint i = 0;
+        uint_t i = 0;
         while ((isint) && (i < DWT.size()))
         {
             if (!equal(DWT[i], std::floor(DWT[i])))
@@ -79,33 +79,33 @@ SOPmap::SOPmap(const mfvec &DWT, const mfvec &SWT, const voblist &A,
                 i += 1;
             }
             muvec pos(1, 0);
-            muint s = 0;
-            for (muint it = 0; it < SWT.size(); it++)
+            uint_t s = 0;
+            for (uint_t it = 0; it < SWT.size(); it++)
             {
-                s += muint(SWT[it]) / muint(pGCD);
+                s += uint_t(SWT[it]) / uint_t(pGCD);
                 pos.emplace_back(s);
-                for (muint n = 0; n < muint(SWT[it]) / muint(pGCD); n++)
+                for (uint_t n = 0; n < uint_t(SWT[it]) / uint_t(pGCD); n++)
                 {
                     pPR.emplace_back(0.0, -1, it);
                 }
             }
             pBDR.reserve(DWT.size());
             objlist tA;
-            for (muint it = 0; it < DWT.size(); it++)
+            for (uint_t it = 0; it < DWT.size(); it++)
             {
                 tA.clear();
-                for (muint m = 0; m < A[it].size(); m++)
+                for (uint_t m = 0; m < A[it].size(); m++)
                 {
-                    for (muint n = 0;
-                         n < muint(SWT[muint(A[it][m].j)]) / muint(pGCD); n++)
+                    for (uint_t n = 0;
+                         n < uint_t(SWT[uint_t(A[it][m].j)]) / uint_t(pGCD); n++)
                     {
                         tA.emplace_back(A[it][m].c, A[it][m].j,
-                                        pos[muint(A[it][m].j)] + n);
+                                        pos[uint_t(A[it][m].j)] + n);
                     }
                 }
-                pBDR.emplace_back(it, muint(DWT[it]) / muint(pGCD), tA);
+                pBDR.emplace_back(it, uint_t(DWT[it]) / uint_t(pGCD), tA);
                 pBDR.back().Refresh(pEPS);
-                pBID.emplace_back(objlist(muint(DWT[it]) / muint(pGCD),
+                pBID.emplace_back(objlist(uint_t(DWT[it]) / uint_t(pGCD),
                                           Object(0.0, -1, -1)));
             }
             if (gVBS > 0)
@@ -129,14 +129,14 @@ void SOPmap::Solve(objlist &T, mfvec &PR)
     if (!pBDR.empty())
     {
         Auction();
-        muint k;
-        muint n = 0;
+        uint_t k;
+        uint_t n = 0;
         std::sort(pPR.begin(), pPR.end(),
                   [](const Object &a, const Object &b) -> bool { return ((a.j < b.j) || ((a.j == b.j) && (a.i < b.i))); });
         PR = mfvec(pPR.size(), 0.0);
-        for (muint it = 0; it < pPR.size(); it++)
+        for (uint_t it = 0; it < pPR.size(); it++)
         {
-            PR[muint(pPR[it].j)] = pPR[it].c;
+            PR[uint_t(pPR[it].j)] = pPR[it].c;
         }
         while (n < pPR.size())
         {
@@ -157,7 +157,6 @@ void SOPmap::Solve(objlist &T, mfvec &PR)
             n += 1;
         }
     }
-    return;
 }
 
 /** --- Auction ----------------------------------------------------------------
@@ -167,7 +166,7 @@ void SOPmap::Auction()
     do
     {
         pEPS *= pSTP;
-        for (muint it = 0; it < pBDR.size(); it++)
+        for (uint_t it = 0; it < pBDR.size(); it++)
         {
             pBDR[it].Refresh(pEPS);
         }
@@ -177,7 +176,6 @@ void SOPmap::Auction()
         }
         Round();
     } while (pEPS >= pMN);
-    return;
 }
 
 /** --- GCD --------------------------------------------------------------------
@@ -192,11 +190,11 @@ mint SOPmap::gcd(const mint a, const mint b) const
 void SOPmap::Round()
 {
     bool avail = true;
-    muint n;
+    uint_t n;
     while (avail)
     {
         // get new bids
-        for (muint it = 0; it < pBDR.size(); it++)
+        for (uint_t it = 0; it < pBDR.size(); it++)
         {
             pBDR[it].MakeBid(pPR, pBID[it]);
         }
@@ -209,7 +207,6 @@ void SOPmap::Round()
             avail = pBDR[--n].Active();
         }
     }
-    return;
 }
 
 /** --- UpdateClaims -----------------------------------------------------------
@@ -217,34 +214,35 @@ void SOPmap::Round()
 void SOPmap::UpdateClaims()
 {
     std::vector<bool> ch(pPR.size(), false);
-    for (muint it = 0; it < pBID.size(); it++)
+    for (uint_t it = 0; it < pBID.size(); it++)
     {
         for (auto ob = pBID[it].begin(); ob < pBID[it].end(); ob++)
         {
-            if (pPR[muint(ob->j)] < *ob)
+            if (pPR[uint_t(ob->j)] < *ob)
             {
-                if (!ch[muint(ob->j)])
+                if (!ch[uint_t(ob->j)])
                 {
-                    ch[muint(ob->j)] = true;
-                    if (pPR[muint(ob->j)].i != -1)
+                    ch[uint_t(ob->j)] = true;
+                    if (pPR[uint_t(ob->j)].i != -1)
                     {
-                        pBDR[muint(pPR[muint(ob->j)].i)].Pop();
+                        pBDR[uint_t(pPR[uint_t(ob->j)].i)].Pop();
                     }
                 }
-                pPR[muint(ob->j)].c = ob->c;
-                pPR[muint(ob->j)].i = ob->i;
+                pPR[uint_t(ob->j)].c = ob->c;
+                pPR[uint_t(ob->j)].i = ob->i;
             }
         }
     }
+
     // apply results to bidders
-    for (muint k = 0; k < ch.size(); k++)
+    
+    for (uint_t k = 0; k < ch.size(); k++)
     {
         if (ch[k])
         {
-            pBDR[muint(pPR[k].i)].Push();
+            pBDR[uint_t(pPR[k].i)].Push();
         }
     }
-    return;
 }
 
 /// ----------------------------------------------------------------------------

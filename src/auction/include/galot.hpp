@@ -32,7 +32,7 @@ Science Foundation.
 #define __GALOT_HPP_INCLUDED
 
 #include <vector>     // std::vector
-#include "glob.hpp"   // mfloat, muint
+#include "glob.hpp"   // mfloat, uint_t
 #include "claim.hpp"  // Claim, cllist, clptr
 #include "object.hpp" // Object
 #include "gabid.hpp"  // GAbdlst
@@ -41,7 +41,7 @@ class GAlot
 {
   public:
     GAlot();
-    GAlot(const muint id, const mfloat wt)
+    GAlot(const uint_t id, const mfloat wt)
         : pCLMS(new cllist), pFRWT(wt), pID(id), pMXWT(wt){};
 
     bool Active() const { return (pFRWT > gEPS); };
@@ -64,7 +64,7 @@ class GAlot
   private:
     clptr pCLMS;  // pointer to claim list
     mfloat pFRWT; // total weight claimed in lot
-    muint pID;    // lot id number
+    uint_t pID;    // lot id number
     mfloat pMXWT; // total weight available in lot
 };
 

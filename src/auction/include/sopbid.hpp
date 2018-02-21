@@ -33,14 +33,14 @@ Science Foundation.
 
 #include <algorithm>  // std::nth_element, std::sort
 #include <cmath>      // std::isinf
-#include "glob.hpp"   // mfloat, muint
+#include "glob.hpp"   // mfloat, uint_t
 #include "object.hpp" // objlist
 
 class SOPbid
 {
   public:
     SOPbid() : pCRWT(0), pEPS(1.0), pID(0), pMXWT(0){};
-    SOPbid(const muint inid, const muint wt, const objlist &A)
+    SOPbid(const uint_t inid, const uint_t wt, const objlist &A)
         : pARC(A), pCRWT(0), pEPS(1.0), pID(inid), pMXWT(wt){};
 
     bool Active() const { return (pMXWT > pCRWT); };
@@ -67,10 +67,10 @@ class SOPbid
 
   private:
     objlist pARC; // arc costs
-    muint pCRWT;  // total weight claimed by bidder
+    uint_t pCRWT;  // total weight claimed by bidder
     mfloat pEPS;  // epsilon
-    muint pID;    // bidder id number
-    muint pMXWT;  // total weight needed by bidder
+    uint_t pID;    // bidder id number
+    uint_t pMXWT;  // total weight needed by bidder
 };
 
 typedef std::vector<SOPbid> SOPbidlist;
