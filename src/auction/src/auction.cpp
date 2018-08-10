@@ -21,6 +21,12 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
     char str[255];
 
     int err = 0;
+
+    if (std::abs(arma::accu(demand_vec) - arma::accu(supply_vec)) > gEPS)
+    {
+        std::cout << "error: sum(demand) != sum(supply)" << std::endl;
+        return 1;
+    }
     
     // mfloat eps = -1.0;
     // mfloat eps_min = -1.0;
