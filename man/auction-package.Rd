@@ -1,6 +1,5 @@
 \name{auction}
 
-\alias{auction}
 \alias{auction-package}
 
 \docType{package}

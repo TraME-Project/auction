@@ -1,6 +1,6 @@
 /*################################################################################
   ##
-  ##   Copyright (C) 2017 Keith O'Hara
+  ##   Copyright (C) 2017-2018 Keith O'Hara
   ##
   ##   This file is part of auction.
   ##
@@ -24,8 +24,10 @@
 
 #include "auction.hpp"
 
-RcppExport SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, 
-                          SEXP algorithm_R, SEXP max_prob_R, 
-                          SEXP eps_init_R, SEXP eps_min_R);
+RcppExport SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R,
+                          SEXP algorithm_R, SEXP max_prob_R,
+                          SEXP eps_init_R, SEXP eps_min_R,
+                          SEXP run_bellman_ford_R,
+                          SEXP bf_upper_prices_R, SEXP verbose_R);
 
 #endif

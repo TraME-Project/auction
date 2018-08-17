@@ -1,14 +1,18 @@
 
 SDIR = .
+
 AUCTION_DIR = $(SDIR)/auction
 AUCTION_SRC_DIR = $(SDIR)/auction/src
 AUCTION_HEADER_DIR = $(SDIR)/auction/include
 
+SP_DIR = $(SDIR)/shortest_path
+SP_SRC_DIR = $(SDIR)/shortest_path/src
+SP_HEADER_DIR = $(SDIR)/shortest_path/include
+
 #
 
-PKG_CXXFLAGS= $(CXX11STD) -DUSE_RCPP_ARMADILLO -I$(SDIR) -I$(AUCTION_HEADER_DIR)
+PKG_CXXFLAGS= $(CXX11STD) -DUSE_RCPP_ARMADILLO -I$(SDIR) -I$(AUCTION_HEADER_DIR) -I$(SP_HEADER_DIR)
 PKG_LIBS= $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
-PKG_CFLAGS= -DUSE_RCPP_ARMADILLO -I$(AUCTION_HEADER_DIR)
 
 CXX_STD = CXX11
 
@@ -16,8 +20,15 @@ CXX_STD = CXX11
 # sources and objects
 
 # core auction files
-SOURCES_AUCTION= $(AUCTION_SRC_DIR)/apbid.cpp $(AUCTION_SRC_DIR)/apmap.cpp $(AUCTION_SRC_DIR)/auction.cpp $(AUCTION_SRC_DIR)/gabid.cpp $(AUCTION_SRC_DIR)/galot.cpp $(AUCTION_SRC_DIR)/gamap.cpp $(AUCTION_SRC_DIR)/sobid.cpp $(AUCTION_SRC_DIR)/somap.cpp $(AUCTION_SRC_DIR)/sopbid.cpp $(AUCTION_SRC_DIR)/sopmap.cpp
+
+SOURCES_AUCTION= $(AUCTION_SRC_DIR)/apbid.cpp $(AUCTION_SRC_DIR)/apmap.cpp $(AUCTION_SRC_DIR)/auction.cpp \
+                 $(AUCTION_SRC_DIR)/gabid.cpp $(AUCTION_SRC_DIR)/galot.cpp $(AUCTION_SRC_DIR)/gamap.cpp   \
+                 $(AUCTION_SRC_DIR)/sobid.cpp $(AUCTION_SRC_DIR)/somap.cpp $(AUCTION_SRC_DIR)/sopbid.cpp  \
+                 $(AUCTION_SRC_DIR)/sopmap.cpp
 OBJECTS_AUCTION= $(SOURCES_AUCTION:.cpp=.o)
+
+SOURCES_SP= $(SP_SRC_DIR)/bellman_ford.cpp
+OBJECTS_SP= $(SOURCES_SP:.cpp=.o)
 
 # modules
 
@@ -26,7 +37,7 @@ OBJECTS_R= $(SOURCES_R:.cpp=.o)
 
 #
 
-OBJECTS_AUCTIONRCPP=$(OBJECTS_AUCTION) $(OBJECTS_R)
+OBJECTS_AUCTIONRCPP=$(OBJECTS_AUCTION) $(OBJECTS_SP) $(OBJECTS_R)
 
 all: $(SHLIB) libauction.Rcpp$(SHLIB_EXT)
 

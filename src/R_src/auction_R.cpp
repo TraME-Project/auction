@@ -1,6 +1,6 @@
 /*################################################################################
   ##
-  ##   Copyright (C) 2017 Keith O'Hara
+  ##   Copyright (C) 2017-2018 Keith O'Hara
   ##
   ##   This file is part of auction.
   ##
@@ -22,7 +22,8 @@
 #include "auction_R.hpp"
 using namespace Rcpp;
 
-SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, SEXP algorithm_R, SEXP max_prob_R, SEXP eps_init_R, SEXP eps_min_R)
+SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, SEXP algorithm_R, SEXP max_prob_R, SEXP eps_init_R, SEXP eps_min_R,
+               SEXP run_bellman_ford_R, SEXP bf_upper_prices_R, SEXP verbose_R)
 {
     try
     {
@@ -32,7 +33,8 @@ SEXP auction_R(SEXP Phi_R, SEXP demand_R, SEXP supply_R, SEXP algorithm_R, SEXP 
         auction(as<arma::mat>(Phi_R),as<arma::vec>(demand_R),as<arma::vec>(supply_R),
                 solution_mat,primal_cost,dual_mat,dual_cost,
                 as<int>(algorithm_R),as<bool>(max_prob_R),
-                as<mfloat>(eps_init_R),as<mfloat>(eps_min_R));
+                as<mfloat>(eps_init_R),as<mfloat>(eps_min_R),
+                as<bool>(run_bellman_ford_R),as<bool>(bf_upper_prices_R),as<bool>(verbose_R));
         
         return Rcpp::List::create(Rcpp::Named("solution") = solution_mat, Rcpp::Named("dual") = dual_mat, 
                                   Rcpp::Named("primal_cost") = primal_cost, Rcpp::Named("dual_cost") = dual_cost);

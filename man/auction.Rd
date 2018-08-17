@@ -24,6 +24,22 @@ auction(Phi,demand,supply,algorithm=1,max_prob=TRUE)
     \item{max_prob=TRUE}{
     Maximization problem or minimization problem.
     }
+    \item{eps_init=-1.0}{
+    Initial step size.
+    }
+    \item{eps_min=-1.0}{
+    Minimum step size.
+    }
+    \item{run_bellman_ford=FALSE}{
+    Run Bellman-Ford algorithm in the event of a duality gap.
+    }
+    \item{bf_upper_prices=TRUE}{
+    Return the upper (TRUE) or lower bounds (FALSE) on prices.
+    }
+    \item{verbose=TRUE}{
+    Verbose printing.
+    }
+
 }
 
 \details{

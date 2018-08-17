@@ -1,0 +1,4 @@
+#! /bin/sh
+## src cleanup script
+
+rm -f ./src/*so ./src/R_src/*.o ./src/auction/src/*.o ./src/shortest_path/src/*.o

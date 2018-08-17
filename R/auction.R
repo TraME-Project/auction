@@ -1,6 +1,6 @@
 ################################################################################
 ##
-##   Copyright (C) 2017 Keith O'Hara
+##   Copyright (C) 2017-2018 Keith O'Hara
 ##
 ##   This file is part of the R package auction.
 ##
@@ -20,11 +20,13 @@
 ################################################################################
 
 auction <- function(Phi, demand, supply, algorithm=1, max_prob=TRUE, 
-                    eps_init = - 1.0, eps_min = - 1.0)
+                    eps_init = - 1.0, eps_min = - 1.0,
+                    run_bellman_ford=FALSE, bf_upper_prices=TRUE, verbose=TRUE)
 {
     # note: eps_init and/or eps_min set to < 0 will lead to default values
     res <- .Call("auction_R", Phi,demand,supply,algorithm,max_prob,
-                 eps_init,eps_min, PACKAGE = "auction.Rcpp")
+                 eps_init,eps_min,run_bellman_ford,bf_upper_prices,verbose,
+                 PACKAGE = "auction.Rcpp")
     
     return(res)
 }
