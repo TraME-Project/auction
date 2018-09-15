@@ -397,6 +397,7 @@ int auction(const arma::mat& Phi, const arma::vec& demand_vec, const arma::vec& 
             if (verbose)
             {
                 std::cout << "     Bellman-Ford did not complete successfully." << std::endl;
+                std::cout << "     (A negative cycle indicates a non-optimal solution)." << std::endl;
             }
         }
     }
